@@ -1,0 +1,6 @@
+      const cameraOffset = new THREE.Vector3(2, 18, -20); // Adjusted to follow the back of the car more closely
+      cameraOffset.applyAxisAngle(new THREE.Vector3(0, 1, 0), euler.y);
+      cameraRef.current.position.x = carlocation.x + cameraOffset.x;
+      cameraRef.current.position.y = carlocation.y + cameraOffset.y;
+      cameraRef.current.position.z = carlocation.z + cameraOffset.z;
+      cameraRef.current.lookAt(carlocation.x, carlocation.y + 3, carlocation.z);
