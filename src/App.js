@@ -19,13 +19,13 @@ function App() {
         <Canvas camera={{ position: [0, 25, 30], fov: 75 }} shadows>
           <color attach="background" args={["#87CEEB"]} />
           <fog attach="fog" args={["#87CEEB", 30, 181]} />
-          <OrbitControls
+          {/* <OrbitControls
             minPolarAngle={Math.PI / 4 + 0.5}
             maxPolarAngle={Math.PI / 2}
             enablePan={true}
             maxZoom={50}
             minZoom={10}
-          />
+          /> */}
           {/* Wrap the scene with the Physics component */}
           <Physics debug={false}>
             <TerrainPlane />

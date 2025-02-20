@@ -9,13 +9,13 @@ function Text3DComponent({
   color = "#ffffff",
   rotation = [0, 0, 0],
 }) {
-  const rodHeight = 4;
+  const rodHeight = 5;
   const rodSpacing = 3;
 
   return (
     <group position={position}>
       <Center>
-        <group rotation={rotation}>
+        <group rotation={rotation} position={[0.1, 0, -20]}>
           <Text3D
             font="/fonts/Dancing Script SemiBold_Regular.json"
             size={size}
@@ -34,17 +34,17 @@ function Text3DComponent({
 
       {/* Support Rods - Adjusted positions for tighter text */}
       <IronRod
-        position={[1.9, -0.55, 4]}
+        position={[-2.7, -0.55, 4]}
         height={rodHeight}
         rotation={[Math.PI / 2, 0, Math.PI / 2]}
       />
       <IronRod
-        position={[2.1, -1.6, -6.5]}
+        position={[-2.7, -1.6, -6.5]}
         height={rodHeight}
         rotation={[Math.PI / 2, 0, Math.PI / 2]}
       />
       <IronRod
-        position={[2, -1.0, -1.6]}
+        position={[-2.7, -1.0, -1.6]}
         height={rodHeight}
         rotation={[Math.PI / 2, 0, Math.PI / 2]}
       />

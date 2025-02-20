@@ -1,4 +1,4 @@
-import { RigidBody } from "@react-three/rapier";
+import { CuboidCollider, RigidBody } from "@react-three/rapier";
 import { useRef, useEffect } from "react";
 import * as THREE from "three";
 import { createNoise2D } from "simplex-noise";
@@ -77,7 +77,7 @@ function Mountain({
   }, [height, baseColor, middleColor, peakColor]);
 
   return (
-    <RigidBody type="fixed">
+    <RigidBody type="fixed" colliders="cuboid">
       <mesh ref={meshRef} position={position} receiveShadow castShadow>
         <meshStandardMaterial
           vertexColors
@@ -86,6 +86,7 @@ function Mountain({
           normalScale={new THREE.Vector2(1, 1)}
         />
       </mesh>
+      <CuboidCollider args={[25, 12, 15]} position={position} />
     </RigidBody>
   );
 }

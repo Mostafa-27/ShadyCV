@@ -135,7 +135,7 @@ function Car({ cameraRef }) {
     if (cameraRef?.current) {
       // console.log(carRef.current);
       const cameraOffset = new THREE.Vector3(2, 18, -20); // Adjusted to follow the back of the car more closely
-      cameraOffset.applyAxisAngle(new THREE.Vector3(0, 1, 0), euler.y * 0.9);
+      cameraOffset.applyAxisAngle(new THREE.Vector3(0, 1, 0), euler.y);
       console.log(euler.y);
       cameraRef.current.position.x = carPosition.x + cameraOffset.x;
       cameraRef.current.position.y = carPosition.y + cameraOffset.y;
