@@ -15,7 +15,7 @@ function App() {
   const [subscribeKeys, getKeys] = useKeyboardControls();
   const handleJoystickMove = (event) => {
     const keys = getKeys();
-    console.log(event.direction, "ss  ");
+
     switch (event.direction) {
       case "FORWARD":
         keys.forward = true;
