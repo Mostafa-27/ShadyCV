@@ -17,7 +17,8 @@
     "simplex-noise": "^4.0.3",
     "three": "^0.173.0",
     "three-stdlib": "^2.35.13",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "react-joystick-component": "^1.2.0"
   },
   "scripts": {
     "start": "react-scripts start",

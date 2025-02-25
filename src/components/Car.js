@@ -5,6 +5,7 @@ import { useKeyboardControls } from "@react-three/drei";
 import { useLoader } from "@react-three/fiber";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import * as THREE from "three";
+import Joystick from "./Joystick"; // Import Joystick component
 
 function Car({ cameraRef }) {
   const carRef = useRef();
@@ -72,6 +73,54 @@ function Car({ cameraRef }) {
   const brakingFactor = 25; // Adjusted braking factor
   const rotationSpeed = 0.025; // Adjusted rotation speed for smoother turns
 
+  useEffect(() => {
+    const unsubscribe = subscribeKeys(() => {
+      // Force re-render when keys change
+      setVelocity((prevVelocity) => ({ ...prevVelocity }));
+    });
+    return () => unsubscribe();
+  }, [subscribeKeys]);
+
+  const handleJoystickMove = (event) => {
+    const keys = getKeys();
+    switch (event.direction) {
+      case "FORWARD":
+        keys.forward = true;
+        keys.backward = false;
+        keys.left = false;
+        keys.right = false;
+        break;
+      case "BACKWARD":
+        keys.forward = false;
+        keys.backward = true;
+        keys.left = false;
+        keys.right = false;
+        break;
+      case "LEFT":
+        keys.forward = false;
+        keys.backward = false;
+        keys.left = true;
+        keys.right = false;
+        break;
+      case "RIGHT":
+        keys.forward = false;
+        keys.backward = false;
+        keys.left = false;
+        keys.right = true;
+        break;
+      default:
+        break;
+    }
+  };
+
+  const handleJoystickStop = () => {
+    const keys = getKeys();
+    keys.forward = false;
+    keys.backward = false;
+    keys.left = false;
+    keys.right = false;
+  };
+
   useFrame((state, delta) => {
     if (!carRef.current || !isOnGround) return;
 
@@ -90,23 +139,31 @@ function Car({ cameraRef }) {
     // Update velocity based on input
     if (keys.backward) {
       direction.set(0, 0, -1).applyEuler(euler);
-      velocity.x += direction.x * acceleration * delta;
-      velocity.z += direction.z * acceleration * delta;
+      setVelocity((prevVelocity) => ({
+        x: prevVelocity.x + direction.x * acceleration * delta,
+        z: prevVelocity.z + direction.z * acceleration * delta,
+      }));
     } else if (keys.forward) {
       direction.set(0, 0, 1).applyEuler(euler);
-      velocity.x += direction.x * acceleration * delta;
-      velocity.z += direction.z * acceleration * delta;
+      setVelocity((prevVelocity) => ({
+        x: prevVelocity.x + direction.x * acceleration * delta,
+        z: prevVelocity.z + direction.z * acceleration * delta,
+      }));
     } else {
       // Apply deceleration when no key is pressed
-      velocity.x *= Math.pow(1 - deceleration * delta, 1);
-      velocity.z *= Math.pow(1 - deceleration * delta, 1);
+      setVelocity((prevVelocity) => ({
+        x: prevVelocity.x * Math.pow(1 - deceleration * delta, 1),
+        z: prevVelocity.z * Math.pow(1 - deceleration * delta, 1),
+      }));
     }
 
     // Limit speed
     const speed = Math.sqrt(velocity.x ** 2 + velocity.z ** 2);
     if (speed > maxSpeed) {
-      velocity.x *= maxSpeed / speed;
-      velocity.z *= maxSpeed / speed;
+      setVelocity((prevVelocity) => ({
+        x: prevVelocity.x * (maxSpeed / speed),
+        z: prevVelocity.z * (maxSpeed / speed),
+      }));
     }
 
     // Enhanced rotation handling
@@ -136,7 +193,7 @@ function Car({ cameraRef }) {
       // console.log(carRef.current);
       const cameraOffset = new THREE.Vector3(2, 18, -20); // Adjusted to follow the back of the car more closely
       cameraOffset.applyAxisAngle(new THREE.Vector3(0, 1, 0), euler.y);
-      console.log(euler.y);
+
       cameraRef.current.position.x = carPosition.x + cameraOffset.x;
       cameraRef.current.position.y = carPosition.y + cameraOffset.y;
       cameraRef.current.position.z = carPosition.z + cameraOffset.z;
@@ -161,29 +218,33 @@ function Car({ cameraRef }) {
   }
 
   return (
-    <RigidBody
-      ref={carRef}
-      position={[0, 3.1, 0]}
-      colliders="cuboid"
-      mass={220} // Adjusted mass for better stability
-      restitution={0.1} // Adjusted restitution for better collision response
-      friction={0.2} // Adjusted friction for better grip
-      linearDamping={0.1} // Adjusted linear damping for smoother motion
-      angularDamping={0.1} // Adjusted angular damping for smoother rotation
-      lockRotations={true}
-      gravityScale={1} // Ensure gravity is applied
-      linearVelocity={[0, -9.8, 0]} // Apply gravity to prevent floating
-    >
-      {/* Debug mesh - always visible */}
-      {/* Model - shown when loaded */}
-      {buggyModel && (
-        <primitive
-          object={buggyModel.scene} // Ensure the object prop is correctly assigned
-          scale={0.1}
-          castShadow
-        />
-      )}
-    </RigidBody>
+    <>
+      <RigidBody
+        ref={carRef}
+        position={[0, 3.1, 0]}
+        colliders="cuboid"
+        mass={220} // Adjusted mass for better stability
+        restitution={0.1} // Adjusted restitution for better collision response
+        friction={0.2} // Adjusted friction for better grip
+        linearDamping={0.1} // Adjusted linear damping for smoother motion
+        angularDamping={0.1} // Adjusted angular damping for smoother rotation
+        lockRotations={true}
+        gravityScale={1} // Ensure gravity is applied
+        linearVelocity={[0, -9.8, 0]} // Apply gravity to prevent floating
+      >
+        {/* Debug mesh - always visible */}
+        {/* Model - shown when loaded */}
+        {buggyModel && (
+          <primitive
+            object={buggyModel.scene} // Ensure the object prop is correctly assigned
+            scale={0.1}
+            castShadow
+          />
+        )}
+      </RigidBody>
+
+      {/* Add Joystick component */}
+    </>
   );
 }
 
