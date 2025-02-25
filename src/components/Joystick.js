@@ -3,18 +3,35 @@ import { Joystick } from "react-joystick-component";
 
 const JoystickComponent = ({ move, stop }) => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 1080);
-
+  const width = window.innerWidth;
+  const height = window.innerHeight;
   useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768);
+    const lockOrientation = async () => {
+      if (window.innerWidth < window.innerHeight) {
+        try {
+          if (window.screen.orientation && window.screen.orientation.lock) {
+            await window.screen.orientation.lock("landscape");
+          }
+        } catch (err) {
+          console.warn("Orientation lock failed:", err);
+        }
+      }
     };
 
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    window.addEventListener("resize", lockOrientation);
+    lockOrientation(); // Initial check
+
+    return () => window.removeEventListener("resize", lockOrientation);
   }, []);
 
   return (
     <>
+      {isMobile && window.innerHeight > window.innerWidth && (
+        <div className="rotate-message">
+          Please rotate your device to landscape mode
+        </div>
+      )}
+
       {isMobile && (
         <div style={{ position: "absolute", bottom: 50, left: 50 }}>
           <Joystick
