@@ -7,6 +7,7 @@ import WaterPlane from "./WaterPlane";
 import Ground from "./Ground";
 import Text3DComponent from "./Text3DComponent";
 import Car from "./Car";
+import Arrow from "./Arrow";
 
 function TerrainPlane() {
   const cameraRef = useRef();
@@ -31,11 +32,24 @@ function TerrainPlane() {
         peakColor={0xadff2f}
       />
       <Text3DComponent
-        text="SHADY ISMAIL"
+        text="MOSTAFA SOLIMAN"
         rotation={[0, 0, 0]}
         position={[10, 18, -193]} // Position on top of the mountain
         size={5}
         color="#ffffff"
+      />
+
+      {/* Arrows */}
+      <Arrow position={[0, 0.1, -180]} direction={[0, 0, 1]} text="Projects" />
+      <Arrow
+        position={[10, 0.1, -180]}
+        direction={[1, 0, 0]}
+        text="Personal Info"
+      />
+      <Arrow
+        position={[-10, 0.1, -180]}
+        direction={[-1, 0, 0]}
+        text="EXperiences"
       />
 
       {/* Ground */}
