@@ -23,56 +23,24 @@ function TerrainPlane() {
       {/* Mountains */}
 
       <Mountain
-        position={[100, 0, -100]}
-        height={12}
-        baseColor={0x228b22}
-        middleColor={0x32cd32}
-        peakColor={0xadff2f}
-      />
-
-      <Mountain
-        position={[-100, 0, -100]}
-        height={12}
-        baseColor={0x228b22}
-        middleColor={0x32cd32}
-        peakColor={0xadff2f}
-      />
-      <CuboidCollider args={[15, 12, 15]} position={[-100, 6, -100]} />
-
-      <Mountain
-        position={[0, 0, -200]}
-        height={12}
-        baseColor={0x228b22}
-        middleColor={0x32cd32}
-        peakColor={0xadff2f}
-      />
-
-      <Mountain
-        position={[50, 0, -150]}
-        height={12}
-        baseColor={0x228b22}
-        middleColor={0x32cd32}
-        peakColor={0xadff2f}
-      />
-
-      <Mountain
-        position={[0, 0, -50]}
-        height={12}
+        position={[120, 0, -230]}
+        height={80}
+        width={30}
         baseColor={0x228b22}
         middleColor={0x32cd32}
         peakColor={0xadff2f}
       />
       <Text3DComponent
-        text="SHADY ABOZAID"
-        rotation={[0, -Math.PI / 2, 0]}
-        position={[6.5, 14, -40]} // Position on top of the mountain
+        text="SHADY ISMAIL"
+        rotation={[0, 0, 0]}
+        position={[10, 18, -193]} // Position on top of the mountain
         size={5}
         color="#ffffff"
       />
 
       {/* Ground */}
       <RigidBody type="fixed" colliders="cuboid">
-        <Ground width={500} length={600} depth={0.03} color={0x4a5d23} />
+        <Ground width={400} length={600} depth={0.03} color={0x4a5d23} />
       </RigidBody>
       <WaterPlane position={[0, -3, 0]} size={2000} />
     </>

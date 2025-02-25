@@ -73,54 +73,13 @@ function Car({ cameraRef }) {
   const brakingFactor = 25; // Adjusted braking factor
   const rotationSpeed = 0.025; // Adjusted rotation speed for smoother turns
 
-  useEffect(() => {
-    const unsubscribe = subscribeKeys(() => {
-      // Force re-render when keys change
-      setVelocity((prevVelocity) => ({ ...prevVelocity }));
-    });
-    return () => unsubscribe();
-  }, [subscribeKeys]);
-
-  const handleJoystickMove = (event) => {
-    const keys = getKeys();
-    switch (event.direction) {
-      case "FORWARD":
-        keys.forward = true;
-        keys.backward = false;
-        keys.left = false;
-        keys.right = false;
-        break;
-      case "BACKWARD":
-        keys.forward = false;
-        keys.backward = true;
-        keys.left = false;
-        keys.right = false;
-        break;
-      case "LEFT":
-        keys.forward = false;
-        keys.backward = false;
-        keys.left = true;
-        keys.right = false;
-        break;
-      case "RIGHT":
-        keys.forward = false;
-        keys.backward = false;
-        keys.left = false;
-        keys.right = true;
-        break;
-      default:
-        break;
-    }
-  };
-
-  const handleJoystickStop = () => {
-    const keys = getKeys();
-    keys.forward = false;
-    keys.backward = false;
-    keys.left = false;
-    keys.right = false;
-  };
-
+  // useEffect(() => {
+  //   const unsubscribe = subscribeKeys(() => {
+  //     // Force re-render when keys change
+  //     setVelocity((prevVelocity) => ({ ...prevVelocity }));
+  //   });
+  //   return () => unsubscribe();
+  // }, [subscribeKeys]);
   useFrame((state, delta) => {
     if (!carRef.current || !isOnGround) return;
 
@@ -221,7 +180,8 @@ function Car({ cameraRef }) {
     <>
       <RigidBody
         ref={carRef}
-        position={[0, 3.1, 0]}
+        position={[0, 3.1, -150]}
+        rotation={[0, Math.PI, 0]} // Rotate the car to face the reverse direction
         colliders="cuboid"
         mass={220} // Adjusted mass for better stability
         restitution={0.1} // Adjusted restitution for better collision response

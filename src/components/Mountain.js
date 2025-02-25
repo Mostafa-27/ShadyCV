@@ -5,6 +5,7 @@ import { createNoise2D } from "simplex-noise";
 
 function Mountain({
   height = 12,
+  width = 15, // New width prop with default value
   position = [-7.5, 0, -7.5],
   baseColor = 0x4a5d23,
   middleColor = 0x8b5a2b,
@@ -30,7 +31,7 @@ function Mountain({
     shape.lineTo(points[0][0], points[0][1]);
 
     const extrudeSettings = {
-      depth: 15 * heightFactor,
+      depth: width * heightFactor, // Use width prop for depth
       bevelEnabled: true,
       bevelThickness: 0.5 * heightFactor,
       bevelSize: 0.3 * heightFactor,
@@ -74,11 +75,16 @@ function Mountain({
     geometry.computeVertexNormals();
 
     meshRef.current.geometry = geometry;
-  }, [height, baseColor, middleColor, peakColor]);
+  }, [height, width, baseColor, middleColor, peakColor]); // Add width to dependency array
 
   return (
     <RigidBody type="fixed" colliders="cuboid">
-      <mesh ref={meshRef} position={position} receiveShadow castShadow>
+      <mesh
+        ref={meshRef}
+        position={position}
+        receiveShadow
+        rotation={[0, -Math.PI / 2, 0]}
+      >
         <meshStandardMaterial
           vertexColors
           roughness={0.8}
@@ -86,7 +92,8 @@ function Mountain({
           normalScale={new THREE.Vector2(1, 1)}
         />
       </mesh>
-      <CuboidCollider args={[25, 12, 15]} position={position} />
+      <CuboidCollider args={[65, 120, width]} position={position} /> // Use
+      width prop for collider
     </RigidBody>
   );
 }

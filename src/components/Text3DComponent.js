@@ -34,19 +34,19 @@ function Text3DComponent({
 
       {/* Support Rods - Adjusted positions for tighter text */}
       <IronRod
-        position={[-2.7, -0.55, 4]}
+        position={[19, -0.55, -4]}
         height={rodHeight}
-        rotation={[Math.PI / 2, 0, Math.PI / 2]}
+        rotation={[Math.PI / 2, 0, 0]}
       />
       <IronRod
-        position={[-2.7, -1.6, -6.5]}
+        position={[0, -1.6, -6.5]}
         height={rodHeight}
-        rotation={[Math.PI / 2, 0, Math.PI / 2]}
+        rotation={[Math.PI / 2, 0, 0]}
       />
       <IronRod
-        position={[-2.7, -1.0, -1.6]}
+        position={[-15, -1.0, -1.6]}
         height={rodHeight}
-        rotation={[Math.PI / 2, 0, Math.PI / 2]}
+        rotation={[Math.PI / 2, 0, 0]}
       />
       {/* <IronRod
         // position={[rodSpacing, 5, -2]}
