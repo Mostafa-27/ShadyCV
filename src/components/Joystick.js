@@ -1,75 +1,32 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Joystick } from "react-joystick-component";
-import { useKeyboardControls } from "@react-three/drei";
 
 const JoystickComponent = ({ move, stop }) => {
-  const [direction, setDirection] = useState("");
-  const [, setKeys] = useKeyboardControls();
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 1080);
 
-  const handleMove = (event) => {
-    setDirection(event.direction);
-    switch (event.direction) {
-      case "FORWARD":
-        setKeys((keys) => ({
-          ...keys,
-          forward: true,
-          backward: false,
-          left: false,
-          right: false,
-        }));
-        break;
-      case "BACKWARD":
-        setKeys((keys) => ({
-          ...keys,
-          forward: false,
-          backward: true,
-          left: false,
-          right: false,
-        }));
-        break;
-      case "LEFT":
-        setKeys((keys) => ({
-          ...keys,
-          forward: false,
-          backward: false,
-          left: true,
-          right: false,
-        }));
-        break;
-      case "RIGHT":
-        setKeys((keys) => ({
-          ...keys,
-          forward: false,
-          backward: false,
-          left: false,
-          right: true,
-        }));
-        break;
-      default:
-        break;
-    }
-  };
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
 
-  const handleStop = () => {
-    setDirection("");
-    setKeys((keys) => ({
-      forward: false,
-      backward: false,
-      left: false,
-      right: false,
-    }));
-  };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   return (
-    <div style={{ position: "absolute", bottom: 50, left: 50 }}>
-      <Joystick
-        size={100}
-        baseColor="gray"
-        stickColor="black"
-        move={move}
-        stop={stop}
-      />
-    </div>
+    <>
+      {isMobile && (
+        <div style={{ position: "absolute", bottom: 50, left: 50 }}>
+          <Joystick
+            size={100}
+            baseColor="gray"
+            stickColor="black"
+            move={move}
+            stop={stop}
+          />
+        </div>
+      )}
+    </>
   );
 };
 

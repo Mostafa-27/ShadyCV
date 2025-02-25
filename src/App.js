@@ -1,12 +1,8 @@
 import { Canvas } from "@react-three/fiber";
 import { Physics } from "@react-three/rapier";
 import TerrainPlane from "./components/TerrainPlane";
-import {
-  OrbitControls,
-  KeyboardControls,
-  useKeyboardControls,
-} from "@react-three/drei";
-import Car from "./components/Car";
+import { useKeyboardControls } from "@react-three/drei";
+
 import Joystick from "./components/Joystick"; // Import Joystick component
 
 function App() {
@@ -61,7 +57,6 @@ function App() {
       default:
         break;
     }
-    console.log(getKeys());
   };
 
   const handleJoystickStop = () => {
@@ -76,7 +71,7 @@ function App() {
     <div className="App" style={{ width: "100vw", height: "100vh" }}>
       <Canvas camera={{ position: [0, 25, 30], fov: 75 }} shadows>
         <color attach="background" args={["#87CEEB"]} />
-        <fog attach="fog" args={["#87CEEB", 30, 181]} />
+        <fog attach="fog" args={["#87CEfB", 100, 230]} />
         {/* <OrbitControls
             minPolarAngle={Math.PI / 4 + 0.5}
             maxPolarAngle={Math.PI / 2}
@@ -97,7 +92,7 @@ function App() {
           {/* Ensure Car is inside the Physics component */}
         </Physics>
       </Canvas>
-      <Joystick move={handleJoystickMove} stop={handleJoystickStop} />{" "}
+      <Joystick move={handleJoystickMove} stop={handleJoystickStop} />
       {/* Add Joystick component */}
     </div>
   );
