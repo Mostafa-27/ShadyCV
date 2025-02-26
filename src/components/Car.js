@@ -148,12 +148,12 @@ function Car({ cameraRef }) {
     const steeringAngle = rotationSpeed * (speed > maxSpeed * 0.75 ? 0.5 : 1);
     if (keys.left) {
       if (speed > 0.1) {
-        euler.y += steeringAngle * (keys.backward ? -1 : 1);
+        euler.y += 0.4 * steeringAngle * (keys.backward ? -1 : 1);
       }
     }
     if (keys.right) {
       if (speed > 0.1) {
-        euler.y -= steeringAngle * (keys.backward ? -1 : 1);
+        euler.y -= 0.4 * steeringAngle * (keys.backward ? -1 : 1);
       }
     }
 
