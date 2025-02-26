@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Joystick } from "react-joystick-component";
 
 const JoystickComponent = ({ move, stop }) => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 1080);
   const width = window.innerWidth;
   const height = window.innerHeight;
+
   useEffect(() => {
     const lockOrientation = async () => {
       if (window.innerWidth < window.innerHeight) {
@@ -19,10 +20,23 @@ const JoystickComponent = ({ move, stop }) => {
     };
 
     window.addEventListener("resize", lockOrientation);
-    lockOrientation(); // Initial check
+    lockOrientation();
 
     return () => window.removeEventListener("resize", lockOrientation);
   }, []);
+
+  const joystick = useMemo(
+    () => (
+      <Joystick
+        size={100}
+        baseColor="gray"
+        stickColor="black"
+        move={move}
+        stop={stop}
+      />
+    ),
+    [move, stop]
+  );
 
   return (
     <>
@@ -34,13 +48,7 @@ const JoystickComponent = ({ move, stop }) => {
 
       {isMobile && (
         <div style={{ position: "absolute", bottom: 50, left: 50 }}>
-          <Joystick
-            size={100}
-            baseColor="gray"
-            stickColor="black"
-            move={move}
-            stop={stop}
-          />
+          {joystick}
         </div>
       )}
     </>

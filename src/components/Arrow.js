@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Text } from "@react-three/drei";
 import * as THREE from "three";
 
@@ -6,8 +6,8 @@ function Arrow({ position, direction, text }) {
   const arrowLength = 20;
   const arrowColor = 0x00f0ff;
 
-  return (
-    <group position={position}>
+  const arrowHelper = useMemo(
+    () => (
       <arrowHelper
         args={[
           new THREE.Vector3(...direction),
@@ -16,6 +16,12 @@ function Arrow({ position, direction, text }) {
           arrowColor,
         ]}
       />
+    ),
+    [direction, arrowLength, arrowColor]
+  );
+
+  const textComponent = useMemo(
+    () => (
       <Text
         position={[direction[0] * arrowLength, 1.5, direction[2] * arrowLength]}
         rotateY={Math.PI}
@@ -24,6 +30,14 @@ function Arrow({ position, direction, text }) {
       >
         {text}
       </Text>
+    ),
+    [direction, arrowLength, text]
+  );
+
+  return (
+    <group position={position}>
+      {arrowHelper}
+      {textComponent}
     </group>
   );
 }

@@ -35,3 +35,6 @@ code {
     z-index: 9999;
   }
 }
+.loading-screen {
+  background-color: blueviolet;
+}

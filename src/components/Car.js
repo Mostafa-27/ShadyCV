@@ -1,11 +1,11 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useCallback, useMemo } from "react";
 import { useFrame } from "@react-three/fiber";
 import { RigidBody, useRapier } from "@react-three/rapier";
 import { useKeyboardControls } from "@react-three/drei";
 import { useLoader } from "@react-three/fiber";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import * as THREE from "three";
-import Joystick from "./Joystick"; // Import Joystick component
+import { useLoading } from "../context/LoadingContext";
 
 function Car({ cameraRef }) {
   const carRef = useRef();
@@ -17,16 +17,34 @@ function Car({ cameraRef }) {
   // Keyboard controls setup
   const [subscribeKeys, getKeys] = useKeyboardControls();
   const { rapier, world } = useRapier();
+  const { addLoadingItem, removeLoadingItem } = useLoading();
+
+  // useEffect(() => {
+  //   return () => removeLoadingItem("car");
+
+  // }, [addLoadingItem, removeLoadingItem]);
+
   // Load the 3D model
-  const buggyModel = useLoader(
-    GLTFLoader,
-    "/3dModels/Buggy.glb",
-    undefined,
-    (error) => {
-      console.error("Error loading model:", error);
-      setModelLoadError(error);
-    }
-  );
+  // const buggyModel = useLoader(
+  //   GLTFLoader,
+  //   "/3dModels/Buggy.glb",
+  //   addLoadingItem("car"),
+  //   removeLoadingItem("car"),
+  //   (error) => {
+  //     console.error("Error loading mode2l:", error);
+  //     setModelLoadError(error);
+  //     removeLoadingItem("car");
+  //   }
+  // );
+  const buggyModel = useLoader(GLTFLoader, "/3dModels/Buggy.glb", (loader) => {
+    loader.manager.onStart = () => addLoadingItem("car");
+    loader.manager.onLoad = () => removeLoadingItem("car");
+    loader.manager.onError = (url) => {
+      console.error("Error loading mode2l:", url);
+      setModelLoadError(url);
+      removeLoadingItem("car");
+    };
+  });
 
   useEffect(() => {
     if (buggyModel) {
@@ -45,6 +63,7 @@ function Car({ cameraRef }) {
         }
       });
       setIsModelReady(true);
+      removeLoadingItem("car");
     }
   }, [buggyModel]);
 
@@ -172,6 +191,14 @@ function Car({ cameraRef }) {
     }
   });
 
+  const primitive = useMemo(
+    () =>
+      buggyModel && (
+        <primitive object={buggyModel.scene} scale={0.1} castShadow />
+      ),
+    [buggyModel]
+  );
+
   if (modelLoadError) {
     console.error("Failed to load model:", modelLoadError);
   }
@@ -194,13 +221,7 @@ function Car({ cameraRef }) {
       >
         {/* Debug mesh - always visible */}
         {/* Model - shown when loaded */}
-        {buggyModel && (
-          <primitive
-            object={buggyModel.scene} // Ensure the object prop is correctly assigned
-            scale={0.1}
-            castShadow
-          />
-        )}
+        {primitive}
       </RigidBody>
 
       {/* Add Joystick component */}

@@ -1,11 +1,11 @@
 import { CuboidCollider, RigidBody } from "@react-three/rapier";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useMemo } from "react";
 import * as THREE from "three";
 import { createNoise2D } from "simplex-noise";
 
 function Mountain({
   height = 12,
-  width = 15, // New width prop with default value
+  width = 15,
   position = [-7.5, 0, -7.5],
   baseColor = 0x4a5d23,
   middleColor = 0x8b5a2b,
@@ -13,14 +13,14 @@ function Mountain({
 }) {
   const meshRef = useRef();
 
-  useEffect(() => {
-    const heightFactor = height / 12; // Scale factor based on default height
+  const geometry = useMemo(() => {
+    const heightFactor = height / 12;
     const shape = new THREE.Shape();
     const points = [
       [0, 0],
       [2, 3 * heightFactor],
       [4, 5 * heightFactor],
-      [7, height], // Main peak scaled by height prop
+      [7, height],
       [10, 6 * heightFactor],
       [13, 4 * heightFactor],
       [15, 0],
@@ -31,7 +31,7 @@ function Mountain({
     shape.lineTo(points[0][0], points[0][1]);
 
     const extrudeSettings = {
-      depth: width * heightFactor, // Use width prop for depth
+      depth: width * heightFactor,
       bevelEnabled: true,
       bevelThickness: 0.5 * heightFactor,
       bevelSize: 0.3 * heightFactor,
@@ -49,7 +49,6 @@ function Mountain({
       let y = positions.getY(i);
       let z = positions.getZ(i);
 
-      // Scale noise based on height
       const largeNoise = noise2D(x * 0.1, z * 0.1) * 2 * heightFactor;
       const mediumNoise = noise2D(x * 0.3, z * 0.3) * 0.8 * heightFactor;
       const smallNoise = noise2D(x * 0.8, z * 0.8) * 0.3 * heightFactor;
@@ -74,8 +73,12 @@ function Mountain({
     positions.needsUpdate = true;
     geometry.computeVertexNormals();
 
+    return geometry;
+  }, [height, width, baseColor, middleColor, peakColor]);
+
+  useEffect(() => {
     meshRef.current.geometry = geometry;
-  }, [height, width, baseColor, middleColor, peakColor]); // Add width to dependency array
+  }, [geometry]);
 
   return (
     <RigidBody type="fixed" colliders="cuboid">
@@ -92,8 +95,7 @@ function Mountain({
           normalScale={new THREE.Vector2(1, 1)}
         />
       </mesh>
-      <CuboidCollider args={[65, 120, width]} position={position} /> // Use
-      width prop for collider
+      <CuboidCollider args={[65, 120, width]} position={position} />
     </RigidBody>
   );
 }
