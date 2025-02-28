@@ -36,19 +36,15 @@ function Car({ cameraRef }) {
   //     removeLoadingItem("car");
   //   }
   // );
-  const buggyModel = useLoader(
-    GLTFLoader,
-    "/3dModels/toyota_hiace_2004.glb",
-    (loader) => {
-      loader.manager.onStart = () => addLoadingItem("car");
-      loader.manager.onLoad = () => removeLoadingItem("car");
-      loader.manager.onError = (url) => {
-        console.error("Error loading mode2l:", url);
-        setModelLoadError(url);
-        removeLoadingItem("car");
-      };
-    }
-  );
+  const buggyModel = useLoader(GLTFLoader, "/3dModels/Buggy.glb", (loader) => {
+    loader.manager.onStart = () => addLoadingItem("car");
+    loader.manager.onLoad = () => removeLoadingItem("car");
+    loader.manager.onError = (url) => {
+      console.error("Error loading mode2l:", url);
+      setModelLoadError(url);
+      removeLoadingItem("car");
+    };
+  });
 
   useEffect(() => {
     if (buggyModel) {
@@ -198,7 +194,7 @@ function Car({ cameraRef }) {
   const primitive = useMemo(
     () =>
       buggyModel && (
-        <primitive object={buggyModel.scene} scale={4.1} castShadow />
+        <primitive object={buggyModel.scene} scale={0.1} castShadow />
       ),
     [buggyModel]
   );

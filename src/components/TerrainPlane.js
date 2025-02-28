@@ -7,7 +7,6 @@ import Ground from "./Ground";
 import Text3DComponent from "./Text3DComponent";
 import Car from "./Car";
 import Arrow from "./Arrow";
-import Brick from "./Brick";
 
 function TerrainPlane() {
   const cameraRef = useRef();
@@ -65,129 +64,11 @@ function TerrainPlane() {
 
   const car = useMemo(() => <Car cameraRef={cameraRef} />, [cameraRef]);
 
-  const bricks = useMemo(
-    () => (
-      <>
-        <Brick
-          position={[1, 0.02, -129]}
-          color={0xffffaa}
-          rotation={[0, 0, 0]}
-        />
-        <Brick
-          position={[-2, 0.02, -132]}
-          color={0xffffaa}
-          rotation={[0, 0, 0]}
-        />
-        <Brick
-          position={[1, 0.02, -135]}
-          color={0xffffaa}
-          rotation={[0, 0, 0]}
-        />
-
-        <Brick
-          position={[-2, 0.02, -138]}
-          color={0xffffaa}
-          rotation={[0, 0, 0]}
-        />
-        <Brick
-          position={[1, 0.02, -141]}
-          color={0xffffaa}
-          rotation={[0, 0, 0]}
-        />
-        <Brick
-          position={[-2, 0.02, -144]}
-          color={0xffffaa}
-          rotation={[0, 0, 0]}
-        />
-      </>
-    ),
-    []
-  );
-  const bricks2 = useMemo(
-    () => (
-      <>
-        <Brick
-          position={[-41, 0.02, -181]}
-          color={0xffffaa}
-          rotation={[0, Math.PI / 2, 0]}
-        />
-        <Brick
-          position={[-44, 0.02, -178]}
-          color={0xffffaa}
-          rotation={[0, Math.PI / 2, 0]}
-        />
-        <Brick
-          position={[-47, 0.02, -181]}
-          color={0xffffaa}
-          rotation={[0, Math.PI / 2, 0]}
-        />
-
-        <Brick
-          position={[-50, 0.02, -178]}
-          color={0xffffaa}
-          rotation={[0, Math.PI / 2, 0]}
-        />
-        <Brick
-          position={[-53, 0.02, -181]}
-          color={0xffffaa}
-          rotation={[0, Math.PI / 2, 0]}
-        />
-        <Brick
-          position={[-56, 0.02, -178]}
-          color={0xffffaa}
-          rotation={[0, Math.PI / 2, 0]}
-        />
-      </>
-    ),
-    []
-  );
-  const bricks3 = useMemo(
-    () => (
-      <>
-        <Brick
-          position={[41, 0.02, -181]}
-          color={0xffffaa}
-          rotation={[0, Math.PI / 2, 0]}
-        />
-        <Brick
-          position={[44, 0.02, -178]}
-          color={0xffffaa}
-          rotation={[0, Math.PI / 2, 0]}
-        />
-        <Brick
-          position={[47, 0.02, -181]}
-          color={0xffffaa}
-          rotation={[0, Math.PI / 2, 0]}
-        />
-
-        <Brick
-          position={[50, 0.02, -178]}
-          color={0xffffaa}
-          rotation={[0, Math.PI / 2, 0]}
-        />
-        <Brick
-          position={[53, 0.02, -181]}
-          color={0xffffaa}
-          rotation={[0, Math.PI / 2, 0]}
-        />
-        <Brick
-          position={[56, 0.02, -178]}
-          color={0xffffaa}
-          rotation={[0, Math.PI / 2, 0]}
-        />
-      </>
-    ),
-    []
-  );
-
   return (
     <>
       {car}
       {mountains}
       {arrows}
-      {bricks}
-      {bricks2}
-      {bricks3}
       <RigidBody type="fixed" colliders="cuboid">
         <Ground width={400} length={600} depth={0.03} color={0x4a5d23} />
       </RigidBody>
