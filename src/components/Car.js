@@ -198,12 +198,7 @@ function Car({ cameraRef }) {
   const primitive = useMemo(
     () =>
       buggyModel && (
-        <primitive
-          object={buggyModel.scene}
-          scale={4.1}
-          rotation={[0, Math.PI, 0]}
-          castShadow
-        />
+        <primitive object={buggyModel.scene} scale={4.1} castShadow />
       ),
     [buggyModel]
   );
